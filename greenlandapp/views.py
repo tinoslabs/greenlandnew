@@ -3,15 +3,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from .models import ClientReview,Products,ShadeCard,Contact,PdfModel
-from .forms import ClientReviewForm,ProductForm,ShadeCardForm,ContactForm,pfdForm
+from .models import ClientReview,Products,ShadeCard,Contact,PdfModel,GalleryModel
+from .forms import ClientReviewForm,ProductForm,ShadeCardForm,ContactForm,pfdForm,GalleryForm
 
 # Create your views here.
 
 def index(request):
     client_reviews = ClientReview.objects.all()
     brochure = PdfModel.objects.all()
-    
+    gallery = GalleryModel.objects.all()
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -20,7 +20,8 @@ def index(request):
             return redirect('index')
     else:
         form = ContactForm()
-    return render(request, 'index.html', {'client_reviews': client_reviews, 'form': form,'brochure':brochure})
+    return render(request, 'index.html', {'client_reviews': client_reviews, 'form': form,'brochure':brochure,'gallery':gallery})
+
 
 @csrf_protect
 def user_login(request):
@@ -265,3 +266,43 @@ def shade_card(request):
 def gallery(request):
     brochure = PdfModel.objects.all()
     return render(request,'gallery.html',{'brochure':brochure})
+
+@login_required(login_url='user_login')
+def add_gallery(request):
+    if request.method == 'POST':
+        form = GalleryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('gallery_view') 
+    else:
+        form = GalleryForm()
+
+    return render(request, 'admin_pages/add_gallery.html', {'form': form})
+
+
+@login_required(login_url='user_login')
+def gallery_view(request):
+    gallery = GalleryModel.objects.all().order_by('-id')
+    return render(request,'admin_pages/gallery_view.html',{'gallery':gallery})
+
+
+@login_required(login_url='user_login')
+def update_gallery(request, id):
+    gallery = get_object_or_404(GalleryModel, id=id)
+
+    if request.method == 'POST':
+        form = GalleryForm(request.POST, request.FILES, instance=gallery)
+        if form.is_valid():
+            form.save()
+            return redirect('gallery_view')
+    else:
+        form = GalleryForm(instance=gallery)
+
+    return render(request, 'admin_pages/update_gallery.html', {'form': form,'gallery':gallery})
+
+
+@login_required(login_url='user_login')
+def delete_gallery(request,id):
+    gallery = GalleryModel.objects.get(id=id)
+    gallery.delete()
+    return redirect('gallery_view')

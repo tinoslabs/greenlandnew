@@ -54,6 +54,11 @@ urlpatterns = [
     path('update/<int:pk>/', views.update_brochure, name='update_brochure'),
     path('delete/<int:pk>/', views.delete_brochure, name='delete_brochure'),
        
+    path('add_gallery', views.add_gallery, name='add_gallery'),
+    path('gallery_view', views.gallery_view, name='gallery_view'),
+    path('update_gallery/<int:id>/', views.update_gallery, name='update_gallery'),
+    path('delete_gallery/<int:id>/', views.delete_gallery, name='delete_gallery'),
+       
     path('about', views.about, name='about'),
     path('contact', views.contact, name='contact'),
     path('service', views.service, name='service'),
