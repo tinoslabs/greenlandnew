@@ -86,7 +86,7 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        {% comment %} <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
                 <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
@@ -94,13 +94,27 @@
                 
                 <a href="{% url 'products' %}" class="nav-item nav-link"> Products</a>
                 <a href="{% url 'shade_card' %}" class="nav-item nav-link"> Shade Card</a>
-                {% comment %} <a href="{% url 'gallery' %}" class="nav-item nav-link"> Gallery</a> {% endcomment %}
+               
                 <a href="{% url 'contact' %}" class="nav-item nav-link"> Contact</a>
             </div>
             {% for brochure in brochure %}
              <a href="{{ brochure.pdf_file.url }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Download Now<i class="fa fa-arrow-right ms-3"></i></a> 
             {% endfor %}
+        </div> {% endcomment %}
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="{% url 'index' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a>
+                <a href="{% url 'about' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+                <a href="{% url 'service' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'service' %}active{% endif %}">Service</a>
+                <a href="{% url 'products' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'products' %}active{% endif %}">Products</a>
+                <a href="{% url 'shade_card' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'shade_card' %}active{% endif %}">Shade Card</a>
+                <a href="{% url 'contact' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
+            </div>
+            {% for brochure in brochure %}
+                <a href="{{ brochure.pdf_file.url }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Download Now<i class="fa fa-arrow-right ms-3"></i></a> 
+            {% endfor %}
         </div>
+        
     </nav>
     <!-- Navbar End -->
     {% block content%}
@@ -111,10 +125,10 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>A12, Kareyeli Vallam Road</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>0484-2590788,<br>8589991117 / 8</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i> greenlandparticleboard@gmail.com</p>
+                    <h4 class="text-light mb-4">Contact</h4>
+                    <p class="mb-2">A12, Kareyeli Vallam Road</p>
+                    <p class="mb-2">0484-2590788,8589991117 / 8</p>
+                    <p class="mb-2"> greenlandparticleboard@gmail.com</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
@@ -124,27 +138,31 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Services</h4>
-                    <a class="btn btn-link" href="">Product Customization</a>
-                    <a class="btn btn-link" href="">Bulk Supply and Distribution</a>
-                    <a class="btn btn-link" href="">Sustainable Manufacturing</a>
-                    <a class="btn btn-link" href="">Responsive Customer Support</a>
-                    <a class="btn btn-link" href="">Logistics and Delivery</a>
+                    <a class="btn btn-link" href="{% url 'service' %}">Product Customization</a>
+                    <a class="btn btn-link" href="{% url 'service' %}">Bulk Supply and Distribution</a>
+                    <a class="btn btn-link" href="{% url 'service' %}">Sustainable Manufacturing</a>
+                    <a class="btn btn-link" href="{% url 'service' %}">Responsive Customer Support</a>
+                    <a class="btn btn-link" href="{% url 'service' %}">Logistics and Delivery</a>
+                    
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Quick Links</h4>
                     <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
                     <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
                     <a class="btn btn-link" href="{% url 'shade_card' %}">Shade Cards</a>
+                    <a class="btn btn-link" href="{% url 'products' %}">Product</a>
+                    <a class="btn btn-link" href="{% url 'shade_card' %}">Shade Cards</a>
+                    
                     {% comment %} <a class="btn btn-link" href="">Terms & Condition</a>
                     <a class="btn btn-link" href="">Support</a> {% endcomment %}
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Greenland Particle Boards Pvt Ltd,
+                    <p class="mb-2">Greenland Particle Boards Pvt Ltd,
                         #XIX/4, A12, Kareyeli Vallam Road,
-                        Via Govt. Veterinary Hospital,
-                        Perumbavoor-683542
-                        Ernakulam Dist.
+                        <br>Via Govt. Veterinary Hospital,
+                        Perumbavoor-683542<br>
+                        Ernakulam Dist.<br>
                         Kerala State.
                     </p>
                     {% comment %} <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
