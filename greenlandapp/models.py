@@ -51,6 +51,9 @@ class PdfModel(models.Model):
         return self.pdf_file.name.split('/')[-1]
     
     
+    
+class GalleryModel(models.Model):
+    gallery_image = models.ImageField(upload_to='images/')
 
     
 
